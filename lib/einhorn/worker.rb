@@ -61,9 +61,9 @@ module Einhorn
     # TODO: add a :fileno option? Easy to implement; not sure if it'd
     # be useful for anything. Maybe if it's always fd 3, because then
     # the user wouldn't have to provide an arg.
-    def self.ack!(discovery = :env, arg = nil)
+    def self.ack!(discovery = :env, arg = nil, pid: nil)
       handle_command_socket(discovery, arg) do |client|
-        client.send_command("command" => "worker:ack", "pid" => $$)
+        client.send_command("command" => "worker:ack", "pid" => pid || $$)
       end
     end
 
@@ -129,7 +129,6 @@ module Einhorn
     end
 
     def self.handle_command_socket(discovery, contextual_arg)
-      ensure_worker!
       close_after_use = true
 
       case discovery
