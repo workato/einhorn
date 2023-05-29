@@ -261,7 +261,7 @@ module Einhorn
       rescue StandardError, LoadError => e
         log_info("Proceeding with postload -- could not load #{path}: #{e} (#{e.class})\n  #{e.backtrace.join("\n  ")}", :upgrade)
       else
-        if Einhorn::State.execute_proc.present? || defined?(einhorn_main)
+        if !Einhorn::State.execute_proc.nil? || defined?(einhorn_main)
           log_info("Successfully loaded #{path}", :upgrade)
           Einhorn::State.preloaded = true
         else
