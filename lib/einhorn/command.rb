@@ -289,7 +289,11 @@ module Einhorn
           setup_parent_watch(expected_ppid)
 
           prepare_child_environment(index)
-          einhorn_main
+          if Einhorn::State.execute_proc.present?
+            Einhorn::State.execute_proc.call
+          else
+            einhorn_main
+          end
         end
       else
         fork do
