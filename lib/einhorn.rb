@@ -417,9 +417,11 @@ module Einhorn
       Einhorn::Command::Interface.persistent_init
 
       Einhorn::State.orig_cmd = ARGV.dup
-      Einhorn::State.cmd = ARGV.dup
-      # TODO: don't actually alter ARGV[0]?
-      Einhorn::State.cmd[0] = which(Einhorn::State.cmd[0])
+      unless Einhorn::State.cmd
+        Einhorn::State.cmd = ARGV.dup
+        # TODO: don't actually alter ARGV[0]?
+        Einhorn::State.cmd[0] = which(Einhorn::State.cmd[0])
+      end
       socketify_env!
     end
 
