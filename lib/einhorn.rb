@@ -163,6 +163,11 @@ module Einhorn
     log_info(Einhorn::State.state.pretty_inspect)
   end
 
+  def self.reset_state
+    Einhorn::State.state = Einhorn::State.default_state
+    Einhorn::TransientState.state = Einhorn::TransientState.default_state
+  end
+
   def self.bind(addr, port, flags)
     log_info("Binding to #{addr}:#{port} with flags #{flags.inspect}")
     sd = Socket.new(Socket::AF_INET, Socket::SOCK_STREAM, 0)
