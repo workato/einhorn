@@ -19,14 +19,18 @@ module Einhorn::Command
       install_handlers
       at_exit do
         if Einhorn::TransientState.whatami == :master
-          to_remove = [pidfile]
-          # Don't nuke socket_path if we never successfully acquired it
-          to_remove << socket_path if @@command_server
-          to_remove.each do |file|
-            File.unlink(file)
-          rescue Errno::ENOENT
-          end
+          remove_binds
         end
+      end
+    end
+
+    def self.remove_binds
+      to_remove = [pidfile]
+      # Don't nuke socket_path if we never successfully acquired it
+      to_remove << socket_path if @@command_server
+      to_remove.each do |file|
+        File.unlink(file)
+      rescue Errno::ENOENT
       end
     end
 
