@@ -7,7 +7,7 @@ module Einhorn::Command
     @@command_server = nil
 
     def self.command_server=(server)
-      raise "Command server already set" if @@command_server && server
+      # raise "Command server already set" if @@command_server && server
       @@command_server = server
     end
 
