@@ -88,7 +88,8 @@ module Einhorn
         drop_environment_variables: [],
         signal_timeout: nil,
         preloaded: false,
-        execute_proc: nil
+        execute_proc: nil,
+        run_once: false
       }
     end
   end
@@ -453,7 +454,7 @@ module Einhorn
 
       # Make sure to do this last, as it's blocking.
       Einhorn::Event.loop_once
-      Einhorn::Command.stop_respawning
+      Einhorn::Command.stop_respawning if Einhorn::State.run_once
     end
   end
 end
