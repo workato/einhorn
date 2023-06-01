@@ -444,7 +444,6 @@ module Einhorn
         Einhorn::State.signal_timeout : [Einhorn::State.signal_timeout, Einhorn::Event.default_timeout].min
     end
 
-    puts Einhorn::State.state.inspect
     while Einhorn::State.respawn || Einhorn::State.children.size > 0
       log_debug("Entering event loop")
 
