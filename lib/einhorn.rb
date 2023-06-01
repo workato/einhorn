@@ -453,6 +453,7 @@ module Einhorn
 
       # Make sure to do this last, as it's blocking.
       Einhorn::Event.loop_once
+      Einhorn::Command.stop_respawning
     end
   end
 end
