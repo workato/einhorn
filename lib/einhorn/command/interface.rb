@@ -77,7 +77,7 @@ module Einhorn::Command
       else
         # Rats, it's still active
         sock.close
-        raise Errno::EADDRINUSE.new("Another process (probably another Einhorn) is listening on the Einhorn command socket at #{path}. If you'd like to run this Einhorn as well, pass a `-d PATH_TO_SOCKET` to change the command socket location.")
+        # raise Errno::EADDRINUSE.new("Another process (probably another Einhorn) is listening on the Einhorn command socket at #{path}. If you'd like to run this Einhorn as well, pass a `-d PATH_TO_SOCKET` to change the command socket location.")
       end
 
       # Socket should still exist, so don't need to handle error.
