@@ -80,9 +80,9 @@ module Einhorn
     #                Then @arg being true causes the FD to be left open after ACK;
     #                otherwise it is closed.
     #   :direct:     Provide the path to the command socket in @arg.
-    def self.ping!(request_id, discovery = :env, arg = nil)
+    def self.ping!(request_id, discovery = :env, arg = nil, pid: nil)
       handle_command_socket(discovery, arg) do |client|
-        client.send_command("command" => "worker:ping", "pid" => $$, "request_id" => request_id)
+        client.send_command("command" => "worker:ping", "pid" => pid || $$, "request_id" => request_id)
       end
     end
 
