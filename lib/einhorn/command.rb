@@ -19,6 +19,8 @@ module Einhorn
     end
 
     def self.cleanup(pid)
+      Einhorn::State.on_cleanup.call(pid) unless Einhorn::State.on_cleanup.nil?
+
       unless (spec = Einhorn::State.children[pid])
         Einhorn.log_error("Could not find any config for exited child #{pid.inspect}! This probably indicates a bug in Einhorn.")
         return
@@ -274,6 +276,7 @@ module Einhorn
       cmd ||= Einhorn::State.cmd
       index = next_index
       expected_ppid = Process.pid
+      Einhorn::State.on_pre_fork.call unless Einhorn::State.on_pre_fork.nil?
       pid = if Einhorn::State.preloaded
         fork do
           Einhorn::TransientState.whatami = :worker
@@ -319,15 +322,19 @@ module Einhorn
 
       Einhorn.log_info("===> Launched #{pid} (index: #{index})", :upgrade)
       Einhorn::State.last_spinup = Time.now
-      Einhorn::State.children[pid] = {
+      item = {
         type: :worker,
         version: Einhorn::State.version,
         acked: false,
         signaled: Set.new,
         last_signaled_at: nil,
         index: index,
-        spinup_time: Einhorn::State.last_spinup
+        spinup_time: Einhorn::State.last_spinup,
+        ppid: expected_ppid,
+        pid: pid
       }
+      item = Einhorn::State.on_new_child_item.call(item) unless Einhorn::State.on_new_child_item.nil?
+      Einhorn::State.children[pid] = item
 
       # Set up whatever's needed for ACKing
       ack_mode = Einhorn::State.ack_mode
