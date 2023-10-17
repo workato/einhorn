@@ -88,7 +88,10 @@ module Einhorn
         drop_environment_variables: [],
         signal_timeout: nil,
         preloaded: false,
+        on_pre_fork: nil,
+        on_new_child_item: nil,
         execute_proc: nil,
+        on_cleanup: nil,
         run_once: false
       }
     end
